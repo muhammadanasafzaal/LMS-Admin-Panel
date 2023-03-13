@@ -1,0 +1,138 @@
+NOTES ADMIN DASHBOARD MERN
+=============================
+
+1. create folder: server and install these =>
+npm i express body-parser cors dotenv helmet morgan mongoose nodemon
+
+2. create index.js file in server folder and import packages/routes, add packages/routes configuration, and add mongoose settings to connect to mongodb
+
+3. create router folder in server and create files for routes defined in the index.js 
+
+4. create controller folder in server and create files for controllers for creates routes
+
+5. create .env file in server folder and add mongodb conenction string with the db user creds
+
+6. create .gitignore file and add nodemodules and .env file 
+
+7. create a folder: client and create react app in it =>
+mpm i create-reatc-app ./
+
+8. install following packages =>
+npm i react-redux @reduxjs/toolkit react-datepicker react-router-dom@6 @mui/material @emotion/react @emotion/styled @mui/icons-material @mui/x-data-grid @nivo/core @nivo/bar @nivo/geo @nivo/pie
+
+9. create a theme.js file in client/src and write the theme settings in it like colors for light and dark mode and function to toggle colors for light and dark mode
+
+10. create folder: state in client/src and create a file index.js in it. 
+in that index.js file =>
+-------------------------
+
+> add a createslice function to add global actions and reducers to store theme settings
+
+11. in src/index.js of the project, configure store and provide store to the app
+
+12. in src/App.js import global state of theme mode from store and pass it to createTheme function of material ui using useMemo hook, also import and add cssbaseline and wrap it in theme provider
+
+13. In src/App.js import BrowserRouter, Routes, Route, Navigate from react-router-dom and create routes for dashboard component and layout
+e.g => 
+ <div className="app">
+  <BrowserRouter>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Routes>
+          <Route element={<Layout/>}>
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/dashboard" element={<Dashboard />}  />
+          </Route>
+      </Routes>
+    </ThemeProvider>
+  </BrowserRouter>
+</div>
+
+14. create files for layout and dashboard component
+15. define navbar and router outlet component in layout
+navbar => will be used with all the components
+outlet => allows routing of components from layout component
+
+16. create navbar component file and create navbar which will contain theme mode and sidebar togglers
+17.  inside layout component add a state to toggle sidebar component
+> pass props to sidebar and navbar components to pass state of sidebar in both components
+e.g => 
+const Layout = () => {
+
+    const isNonMobile = useMediaQuery("(min-width: 600px)");
+    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  return (
+    <Box display={ isNonMobile ? "flex" : "block" } width="100%" height="100%">
+        <Sidebar 
+            isNonMobile={isNonMobile}
+            drawerWidth="250px"
+            isSidebarOpen={isSidebarOpen}
+            setIsSidebarOpen={setIsSidebarOpen}
+        />
+        <Box>
+            <Navbar 
+                isSidebarOpen={isSidebarOpen}
+                setIsSidebarOpen={setIsSidebarOpen}
+            />
+            <Outlet />
+        </Box>
+    </Box>
+  )
+}
+
+export default Layout
+
+> inside navbar and sidebar components pass state setter to toggle sidebar on click
+> create material sidebar layout in sidebar component and define navitems to be listed on sidebar
+> define state to get current url path
+> add router navigate method in sidebar and with each navitem to navigate to navitem url 
+
+
+18. add an userId from mock data as initialstate in state/index.js 
+19. add getUser route in server/routes/general.js 
+20. create folder server/models and add User.js file and add user data schema 
+21. in server/controller/general.s add getUser controller to get user by id
+22. import user model and mock user data in server/index.js
+23. in server/index.js inside mongoose connect method write insert user query to insert mock user data into mongodb
+> run the application again and check if data has been added to mongodb
+> if data has been added then remove the insert user data query from server/index.js to prevent insertion of same data again and again in mongodb
+24. add new file api.js in client/state to run api using redux
+25. create env.local file and define api port there to make requests from frontend on server port
+26. in client/index.js define api reducer in store method and setuplisteners for api calls
+27. in client/layout/index.js get userid from store and query getUser method of controller passing userid to get user 
+28. if request is not made, check the request url in networks of browser and if it is incorrect then restart the react app
+29. pass the user data in sidebar and navabr components
+30. write html to display user data in both sidebar and navbar components
+31. create menu in navbar to display logout menu and define handlers to toggle it
+
+api request data flow =>
+query api using redux query > searches for route file in server/index.js > in route file it finds method defined for that query in its controller file > executes the method > returns response
+
+32. create models schema for products and productstat in server/models
+33. import models in server/index.js and run insertmany query for products and productstat to fill mock data in mongodb by restarting the node once 
+34. add routes for product and define method getProducts from client.js controller 
+35. write getProduct method to get products and product stat of each product
+36. add query in redux to get Product data from mongodb on query request
+37. in client/app.js define product route to be rendered in layout component
+38. create product component in client/scenes/products and get products data via redux query
+
+39. follow the above steps to get customers data 
+40. create new model for transactions in server/models
+41. import transaction model in server/index.js and define insertmany query to insert transaction mock data in mongodb and re run server once and delete query after that to prevent re entring the data into db
+42. in server/router/client.js add new route to call getTransaction method data from client.js controller
+43. write getTransaction method in server/controllers/client.js \
+44. write redux query to call getTransactions method in client/state/api.js
+45. define route for transaction component in client/app.js
+46. define transaction component in client/scenes/transaction/index.js
+
+47. in server/router/client.js add new route to call geography method data from client.js controller
+48. write getGeography method in server/controllers/client.js 
+49. write redux query to call getGeography method in client/state/api.js
+50. go to nivo charts site and browse choropleth and search for github link to open country data file
+51. select raw data from github link, copy it and create a file in client/state/geoData.js and paste data into it
+50. define route for geography component in client/app.js
+51. define geography component in client/scenes/transaction/index.js 
+
+
+
