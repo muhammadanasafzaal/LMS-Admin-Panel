@@ -38,19 +38,19 @@ const TotalSales = () => {
             flex: 1
         },
         {
-            field: "description",
-            headerName: "Job Description",
-            flex: 0.5
-        },
-        {
-          field: "student",
+          field: "sale made by",
           headerName: "Sale Made By",
           flex: 1,
           valueGetter: (params) => {
             let result = [];
             if (params.row) {
               console.log(params, 'params sales made')
-              result.push(params.row.student.name);
+              if(params.row.student){
+                result.push(params.row.student.name);
+              }
+              else{ if(params.row.teacher)
+                result.push(params.row.teacher.name);
+              }
             } else {
               result = ["Unknown"];
             }

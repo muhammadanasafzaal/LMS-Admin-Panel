@@ -47,70 +47,54 @@ const DailySales = () => {
       field: "_id",
       headerName: "ID",
       flex: 1
-    },
-    {
-      field: "description",
-      headerName: "Job Description",
-      flex: 0.5
-    },
-    {
-      field: "student",
-      headerName: "Sale Made By",
-      flex: 1,
-      valueGetter: (params) => {
-        let result = [];
-        if (params.row) {
-          console.log(params, 'params')
+  },
+  {
+    field: "sale made by",
+    headerName: "Sale Made By",
+    flex: 1,
+    valueGetter: (params) => {
+      let result = [];
+      if (params.row) {
+        console.log(params, 'params sales made')
+        if(params.row.student){
           result.push(params.row.student.name);
-        } else {
-          result = ["Unknown"];
         }
-        return result.join(", ");
-      },
-      type: 'string',
-    },
-    {
-      field: "coin",
-      headerName: "Sale Amount (coins)",
-      flex: 1,
-      valueGetter: (params) => {
-        let result = [];
-        if (params.row) {
-          console.log(params, 'params')
-          result.push(params.row.student.coins);
-        } else {
-          result = ["Unknown"];
+        else{ if(params.row.teacher)
+          result.push(params.row.teacher.name);
         }
-        return result.join(", ");
-      },
-      type: 'string',
+      } else {
+        result = ["Unknown"];
+      }
+      return result.join(", ");
     },
-    {
-      field: "action",
-      headerName: "Action",
-      flex: 0.5
+    type: 'string',
+  },
+  {
+    field: "coin",
+    headerName: "Sale Amount (coins)",
+    flex: 1,
+    valueGetter: (params) => {
+      let result = [];
+      if (params.row) {
+        console.log(params, 'params')
+        result.push(params.row.student.coins);
+      } else {
+        result = ["Unknown"];
+      }
+      return result.join(", ");
     },
-    {
-      field: "updatedAt",
-      headerName: "Sales Time",
-      flex: 0.5
-    },
-
-
-    // {
-    //   field: "actions",
-    //   headerName: "Actions",
-    //   flex: 1,
-    //   renderCell: (cellValues) => {
-    //     return (
-    //       <>
-    //         <IconButton aria-label="edit" onClick={() => editJob(cellValues)}>
-    //           <EditIcon />
-    //         </IconButton>
-    //       </>
-    //     );
-    //   },
-    // }
+    type: 'string',
+  },
+  {
+    field: "action",
+    headerName: "Action",
+    flex: 0.5
+  },
+  {
+    field: "updatedAt",
+    headerName: "Sales Time",
+    flex: 0.5
+  },
   ]
 
   return (
